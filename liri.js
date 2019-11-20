@@ -1,8 +1,20 @@
+// -----------------------------file set up---------------------------------------
 // import all your requirements into your file:
+
+// allows the file to read .env files
 require("dotenv").config();
+// obtian spotify keys from keys.js
 var keys = require("./keys.js");
+// instill spotify node api to make searches using node
 var Spotify = require('node-spotify-api');
+//  create a new instance of spotify keys
 var spotify = new Spotify(keys.spotify);
+// require node file system
+let fs = require("fs")
+// require axios 
+let axios = require("axios")
+
+// ----------------------------functionality-----------------------------------
 
 // define your "command" as the 0'th element of your trimmed "process.arv" object
 let command = process.argv.slice(2)[0];
@@ -11,9 +23,8 @@ console.log(command);
 let query = process.argv.slice(3).join(" ");
 console.log(query)
 
-
-// $(document).ready(function () {
-
+// define a switch funtion that evaluates your commmand and uses the query to carry out
+// the appropiate action given the command case
 function userInstruction(command, query) {
 
     switch (command) {
@@ -23,10 +34,12 @@ function userInstruction(command, query) {
         case "concert-this":
             concertSearch()
             break;
-
-
-
-
+        case "movie-this":
+            movieSearch();
+            break;
+        case "do-what-it-says":
+            doIt();
+            break;
     }
 }
 
@@ -56,17 +69,30 @@ let spotifySearch = () => {
 // define a funtion to search for concerts using the user query
 let concertSearch = () => {
 
-    console.log("when is the concert?")
-    // let queryURL = "https://rest.bandsintown.com/artists/" + query + "/events?app_id=codingbootcamp"
-    // $.ajax({
-    //     url: queryURL,
-    //     method: "GET"
-    // }).then(function (response) {
-    //     console.log(response)
-    // })
+    let URL = "https://rest.bandsintown.com/artists/" + query + "/events?app_id=codingbootcamp"
+
+    // request code optained from axios npm documentation: https://www.npmjs.com/package/axios 
+    axios.get(URL).then(function (response) {
+            // handle success
+            console.log(response);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        })
+        .finally(function () {
+            // always executed
+        });
+}
+// define a funtion to serach for movies 
+let movieSearch = () => {
+    // your moview query goes here 
+}
+// define 
+let doIt = () => {
+
+
 }
 
-
+// run the switch function with the commmand and query parameters defined by the user 
 userInstruction(command, query);
-
-// })
