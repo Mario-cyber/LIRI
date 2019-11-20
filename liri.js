@@ -13,6 +13,8 @@ var spotify = new Spotify(keys.spotify);
 let fs = require("fs")
 // require axios 
 let axios = require("axios")
+// require moment
+let moment = require("moment")
 
 // ----------------------------functionality-----------------------------------
 
