@@ -76,7 +76,19 @@ let concertSearch = () => {
     // request code optained from axios npm documentation: https://www.npmjs.com/package/axios 
     axios.get(URL).then(function (response) {
             // handle success
-            console.log(response);
+            // response reasigned to response.data to only see the result of query
+            response = response.data
+            console.log("numer of results: " + response.length)
+            response.forEach(element => {
+                console.log("Result #" + (response.indexOf(element) + 1))
+                console.log("venue: " + element.venue.name)
+                console.log("location: " + element.venue.city + ", " + element.venue.region + ", " + element.venue.country)
+                console.log("date: " + moment(element.datetime).format("MM/DD/YYYY"))
+                console.log("\n-------------------------")
+            });
+
+            // console.log(response);
+
         })
         .catch(function (error) {
             // handle error
