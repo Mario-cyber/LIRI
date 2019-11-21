@@ -46,7 +46,7 @@ function userInstruction(command, query) {
 }
 
 // define a sptify search function which uses the user query to return
-// infromation about a given track 
+// information about a given track 
 let spotifySearch = () => {
     spotify.search({
         type: 'track',
@@ -78,7 +78,7 @@ let concertSearch = () => {
             // handle success
             // response reasigned to response.data to only see the result of query
             response = response.data
-            console.log("numer of results: " + response.length)
+            console.log("numer of results: " + response.length + "\n-------------------------")
             response.forEach(element => {
                 console.log("Result #" + (response.indexOf(element) + 1))
                 console.log("venue: " + element.venue.name)
@@ -86,9 +86,6 @@ let concertSearch = () => {
                 console.log("date: " + moment(element.datetime).format("MM/DD/YYYY"))
                 console.log("\n-------------------------")
             });
-
-            // console.log(response);
-
         })
         .catch(function (error) {
             // handle error
@@ -104,8 +101,20 @@ let movieSearch = () => {
 }
 // define 
 let doIt = () => {
-
-
+    // use "fs" to read contents of random.txt
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            return console.log(error);
+        }
+        // retrieve string info from random.txt and split into an array on the ","
+        data = data.split(",")
+        // 0th element of the array will be the command
+        command = data[0]
+        // 1st element of the array will be the query
+        query = data[1]
+        // use this newly defined command and query to run a new instace of "userInstrcution" function
+        userInstruction(command, query)
+    })
 }
 
 // run the switch function with the commmand and query parameters defined by the user 
