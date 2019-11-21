@@ -56,7 +56,16 @@ let spotifySearch = () => {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        console.log(data);
+        // data = data.items;
+        data = data.tracks.items[0]
+
+        // let name = // response.songName
+        // let sample = //sample to song link
+        //  let album = // response.artist
+
+        console.log(data)
+        // console.log(data.tracks.items[0].album);
+        // console.log(typeof data);
         // view response objects and extract pertinent info 
         // let artist = // response.artist
         // let name = // response.songName
@@ -71,19 +80,25 @@ let spotifySearch = () => {
 // define a funtion to search for concerts using the user query
 let concertSearch = () => {
 
-    let URL = "https://rest.bandsintown.com/artists/" + query + "/events?app_id=codingbootcamp"
+    let bandURL = "https://rest.bandsintown.com/artists/" + query + "/events?app_id=codingbootcamp"
 
     // request code optained from axios npm documentation: https://www.npmjs.com/package/axios 
-    axios.get(URL).then(function (response) {
+    axios.get(bandURL).then(function (response) {
             // handle success
             // response reasigned to response.data to only see the result of query
             response = response.data
             console.log("numer of results: " + response.length + "\n-------------------------")
             response.forEach(element => {
-                console.log("Result #" + (response.indexOf(element) + 1))
-                console.log("venue: " + element.venue.name)
-                console.log("location: " + element.venue.city + ", " + element.venue.region + ", " + element.venue.country)
-                console.log("date: " + moment(element.datetime).format("MM/DD/YYYY"))
+                // go to the response and store the relevant information into variables
+                let resultNumber = response.indexOf(element) + 1
+                let venue = element.venue.name;
+                let location = element.venue.city + ", " + element.venue.region + ", " + element.venue.country
+                let date = moment(element.datetime).format("MM/DD/YYYY")
+                // console.log said variables 
+                console.log("Result #" + resultNumber)
+                console.log("Venue: " + venue)
+                console.log("Location: " + location)
+                console.log("Date: " + date)
                 console.log("\n-------------------------")
             });
         })
@@ -97,7 +112,70 @@ let concertSearch = () => {
 }
 // define a funtion to serach for movies 
 let movieSearch = () => {
-    // your moview query goes here 
+    let movieURL = ""
+    switch (query) {
+        case "":
+            movieURL = "http://www.omdbapi.com/?apikey=e69c2f14&t=Mr.Nobody"
+            axios.get(movieURL).then(function (response) {
+                    response = response.data
+                    title = response.Title
+                    year = response.Year
+                    imdbR = response.imdbRating
+                    rottR = response.Ratings[1].Value
+                    country = response.Country
+                    lang = response.Language
+                    plot = response.Plot
+                    actors = response.Actors
+
+                    console.log("Title: " + title)
+                    console.log("Release year:  " + year)
+                    console.log("IMDB rating: " + imdbR)
+                    console.log("Rotten Tomatoes rating: " + rottR)
+                    console.log("Country of prodcution: " + country)
+                    console.log("Language: " + lang)
+                    console.log("Plot: " + plot)
+                    console.log("Cast: " + actors)
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .finally(function () {
+                    // always executed
+                });
+            break;
+        case query:
+            movieURL = "http://www.omdbapi.com/?apikey=e69c2f14&t=" + query
+            axios.get(movieURL).then(function (response) {
+                    response = response.data
+                    let title = response.Title
+                    let year = response.Year
+                    let imdbR = response.imdbRating
+                    let rottR = response.Ratings[1].Value
+                    let country = response.Country
+                    let lang = response.Language
+                    let plot = response.Plot
+                    let actors = response.Actors
+
+                    console.log("Title: " + title)
+                    console.log("Release year:  " + year)
+                    console.log("IMDB rating: " + imdbR)
+                    console.log("Rotten Tomatoes rating: " + rottR)
+                    console.log("Country of prodcution: " + country)
+                    console.log("Language: " + lang)
+                    console.log("Plot: " + plot)
+                    console.log("Cast: " + actors)
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .finally(function () {
+                    // always executed
+                });
+            break;
+
+    }
 }
 // define 
 let doIt = () => {
