@@ -48,38 +48,62 @@ function userInstruction(command, query) {
 // define a sptify search function which uses the user query to return
 // information about a given track 
 let spotifySearch = () => {
-    spotify.search({
-        type: 'track',
-        query: query,
-        limit: 5
-    }, function (err, data) {
-        if (err) {
-            return console.log('Error occurred: ' + err);
-        }
-        // data = data.items;
-        data = data.tracks.items[0]
+    switch (query) {
+        case "":
+            spotify.search({
+                type: 'track',
+                query: "The Sign",
+                limit: 5
+            }, function (err, data) {
+                if (err) {
+                    return console.log('Error occurred: ' + err);
+                }
+                // redifine data as such in order to more easily navigate the object
+                data = data.tracks.items[0]
 
-        // let name = // response.songName
-        // let sample = //sample to song link
-        //  let album = // response.artist
+                //extarct your info from response and place into variables  
+                albumName = data.album.name;
+                artist = data.artists[0].name
+                songName = data.name
+                songURL = data.preview_url
+                // console.log info extracted
+                console.log("Artist: " + artist)
+                console.log("Song Name: " + songName)
+                console.log("Album: " + albumName)
+                console.log("Song Sample: " + songURL)
+            })
+            break;
 
-        console.log(data)
-        // console.log(data.tracks.items[0].album);
-        // console.log(typeof data);
-        // view response objects and extract pertinent info 
-        // let artist = // response.artist
-        // let name = // response.songName
-        // let sample = //sample to song link
-        //  let album = // response.artist
-        //console.log(artist)
-        // console.log(name)
-        // console.log(sample)
-        // console.log(album)
-    });
+        case query:
+            spotify.search({
+                type: 'track',
+                query: query,
+                limit: 5
+            }, function (err, data) {
+                if (err) {
+                    return console.log('Error occurred: ' + err);
+                }
+                // redifine data as such in order to more easily navigate the object
+                data = data.tracks.items[0]
+
+                //extarct your info from response and place into variables  
+                albumName = data.album.name;
+                artist = data.artists[0].name
+                songName = data.name
+                songURL = data.preview_url
+                // console.log info extracted
+                console.log("Artist: " + artist)
+                console.log("Song Name: " + songName)
+                console.log("Album: " + albumName)
+                console.log("Song Sample: " + songURL)
+
+            });
+            break;
+    }
 }
 // define a funtion to search for concerts using the user query
 let concertSearch = () => {
-
+    // define a query URL based on the "bands in town documentation" and the user query
     let bandURL = "https://rest.bandsintown.com/artists/" + query + "/events?app_id=codingbootcamp"
 
     // request code optained from axios npm documentation: https://www.npmjs.com/package/axios 
@@ -112,12 +136,16 @@ let concertSearch = () => {
 }
 // define a funtion to serach for movies 
 let movieSearch = () => {
+    // define a URL varilabe that tou can use for both cases of the switch 
     let movieURL = ""
     switch (query) {
         case "":
+            // generic request for Mr.Nobody in case query is empty
             movieURL = "http://www.omdbapi.com/?apikey=e69c2f14&t=Mr.Nobody"
             axios.get(movieURL).then(function (response) {
+                    // rename response as response.data to only get response info
                     response = response.data
+                    // extract relveant info into variables 
                     title = response.Title
                     year = response.Year
                     imdbR = response.imdbRating
@@ -126,7 +154,7 @@ let movieSearch = () => {
                     lang = response.Language
                     plot = response.Plot
                     actors = response.Actors
-
+                    // console.log info from response 
                     console.log("Title: " + title)
                     console.log("Release year:  " + year)
                     console.log("IMDB rating: " + imdbR)
@@ -145,9 +173,12 @@ let movieSearch = () => {
                 });
             break;
         case query:
+            // compose a request URL with a basic URL template and the user query
             movieURL = "http://www.omdbapi.com/?apikey=e69c2f14&t=" + query
             axios.get(movieURL).then(function (response) {
+                    // rename response as response.data to only get response info
                     response = response.data
+                    // extract relveant info into variables 
                     let title = response.Title
                     let year = response.Year
                     let imdbR = response.imdbRating
@@ -156,7 +187,7 @@ let movieSearch = () => {
                     let lang = response.Language
                     let plot = response.Plot
                     let actors = response.Actors
-
+                    // console.log info from response 
                     console.log("Title: " + title)
                     console.log("Release year:  " + year)
                     console.log("IMDB rating: " + imdbR)
@@ -177,7 +208,7 @@ let movieSearch = () => {
 
     }
 }
-// define 
+// define a doIt function in case the user input is do-what-it-says
 let doIt = () => {
     // use "fs" to read contents of random.txt
     fs.readFile("random.txt", "utf8", function (error, data) {
