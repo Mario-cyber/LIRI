@@ -20,10 +20,10 @@ let moment = require("moment")
 
 // define your "command" as the 0'th element of your trimmed "process.arv" object
 let command = process.argv.slice(2)[0];
-console.log(command);
+// console.log(command);
 // define your query as the rest of the "process.arv" made into a string using the ".join" mehtod
 let query = process.argv.slice(3).join(" ");
-console.log(query)
+// console.log(query)
 
 // define a switch funtion that evaluates your commmand and uses the query to carry out
 // the appropiate action given the command case
@@ -52,7 +52,7 @@ let spotifySearch = () => {
         case "":
             spotify.search({
                 type: 'track',
-                query: "The Sign",
+                query: "the sign",
                 limit: 5
             }, function (err, data) {
                 if (err) {
